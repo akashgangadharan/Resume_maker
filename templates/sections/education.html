@@ -1,0 +1,134 @@
+<section id="education">
+    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+    <div id="education-container">
+        <div class="education-entry card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-11">
+                        <div class="grid" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="width: 400px;">
+                                <input type="text" 
+                                       name="school_0" 
+                                       placeholder="University/School Name"
+                                       style="width: 100%;">
+                            </div>
+                            <div style="width: 400px;">
+                                <input type="text" 
+                                       name="degree_0" 
+                                       placeholder="Degree/Certificate"
+                                       style="width: 100%;">
+                            </div>
+                            <div style="width: 400px;">
+                                <input type="text" 
+                                       name="edu_location_0" 
+                                       placeholder="Location"
+                                       style="width: 100%;">
+                            </div>
+                            <div style="display: flex; gap: 4rem;">
+                                <div style="width: 180px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Start Date</label>
+                                    <input type="month" 
+                                           name="edu_start_0" 
+                                           placeholder="Start Date"
+                                           title="Start Date (MM/YYYY)"
+                                           onfocus="this.type='month'"
+                                           onblur="if(!this.value) this.type='text'"
+                                           style="width: 100%;">
+                                </div>
+                                <div style="width: 180px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">End Date</label>
+                                    <input type="month" 
+                                           name="edu_end_0" 
+                                           placeholder="End Date"
+                                           title="End Date (MM/YYYY)"
+                                           onfocus="this.type='month'"
+                                           onblur="if(!this.value) this.type='text'"
+                                           style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn-delete" onclick="deleteEducation(this)">×</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn-add" onclick="addEducation()">Add Education</button>
+
+    <script>
+        let educationCount = 1;
+
+        function addEducation() {
+            const container = document.getElementById('education-container');
+            const newEducation = document.createElement('div');
+            newEducation.className = 'education-entry card';
+            newEducation.innerHTML = `
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="grid" style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div style="width: 400px;">
+                                    <input type="text" 
+                                           name="school_${educationCount}" 
+                                           placeholder="University/School Name"
+                                           style="width: 100%;">
+                                </div>
+                                <div style="width: 400px;">
+                                    <input type="text" 
+                                           name="degree_${educationCount}" 
+                                           placeholder="Degree/Certificate"
+                                           style="width: 100%;">
+                                </div>
+                                <div style="width: 400px;">
+                                    <input type="text" 
+                                           name="edu_location_${educationCount}" 
+                                           placeholder="Location"
+                                           style="width: 100%;">
+                                </div>
+                                <div style="display: flex; gap: 4rem;">
+                                    <div style="width: 180px;">
+                                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Start Date</label>
+                                        <input type="month" 
+                                               name="edu_start_${educationCount}" 
+                                               placeholder="Start Date"
+                                               title="Start Date (MM/YYYY)"
+                                               onfocus="this.type='month'"
+                                               onblur="if(!this.value) this.type='text'"
+                                               style="width: 100%;">
+                                    </div>
+                                    <div style="width: 180px;">
+                                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">End Date</label>
+                                        <input type="month" 
+                                               name="edu_end_${educationCount}" 
+                                               placeholder="End Date"
+                                               title="End Date (MM/YYYY)"
+                                               onfocus="this.type='month'"
+                                               onblur="if(!this.value) this.type='text'"
+                                               style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn-delete" onclick="deleteEducation(this)">×</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newEducation);
+            educationCount++;
+        }
+
+        function deleteEducation(button) {
+            const entries = document.getElementsByClassName('education-entry');
+            if (entries.length > 1) {
+                button.closest('.education-entry').remove();
+                educationCount--;
+            } else {
+                alert('At least one education entry is required!');
+            }
+        }
+    </script>
+</section> 

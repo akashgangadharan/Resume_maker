@@ -1,0 +1,57 @@
+<section id="achievements">
+    <h2>Achievements</h2>
+    <div id="achievements-container">
+        <div class="achievement-entry mb-3">
+            <div class="row">
+                <div class="col-11">
+                    <textarea class="form-control" name="achievements_0" placeholder="Enter achievement" rows="2"></textarea>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-danger btn-sm remove-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addAchievement()">Add Achievement</button>
+
+    <script>
+        let achievementCount = 1;
+
+        function addAchievement() {
+            if (achievementCount < 5) {  // Maximum 5 achievements
+                const container = document.getElementById('achievements-container');
+                const newAchievement = `
+                    <div class="achievement-entry mb-3">
+                        <div class="row">
+                            <div class="col-11">
+                                <textarea class="form-control" name="achievements_${achievementCount}" placeholder="Enter achievement" rows="2"></textarea>
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeAchievement(this)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', newAchievement);
+                achievementCount++;
+            } else {
+                alert('Maximum 5 achievements allowed!');
+            }
+        }
+
+        function removeAchievement(button) {
+            const achievementEntries = document.getElementsByClassName('achievement-entry');
+            if (achievementEntries.length > 1) {
+                button.closest('.achievement-entry').remove();
+                achievementCount--;
+            } else {
+                alert('At least one achievement is required!');
+            }
+        }
+
+        // Add onclick handler to existing remove buttons
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.onclick = function() { removeAchievement(this); };
+        });
+    </script>
+</section> 

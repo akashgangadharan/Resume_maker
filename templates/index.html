@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Builder</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <form method="POST" action="{{ url_for('generate_resume') }}">
+        <h2>Personal Information</h2>
+        <div>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required 
+                value="{{ resume_data.personal_info.name if resume_data else '' }}">
+        </div>
+        
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required
+                value="{{ resume_data.personal_info.email if resume_data else '' }}">
+        </div>
+        
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required
+                value="{{ resume_data.personal_info.phone if resume_data else '' }}">
+        </div>
+        
+        <div>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required
+                value="{{ resume_data.personal_info.location if resume_data else '' }}">
+        </div>
+        
+        <div>
+            <label for="linkedin">LinkedIn URL:</label>
+            <input type="url" id="linkedin" name="linkedin" 
+                value="{{ resume_data.personal_info.linkedin if resume_data else '' }}">
+        </div>
+        
+        <div>
+            <label for="portfolio">Portfolio (Optional):</label>
+            <input type="text" id="portfolio" name="portfolio"
+                value="{{ resume_data.personal_info.portfolio if resume_data else '' }}">
+        </div>
+
+        <h2>Summary</h2>
+        <div id="summary-container">
+            <div class="summary-point">
+                <input type="text" name="summary[]" placeholder="Add summary point" class="form-control">
+                <button type="button" class="remove-point btn btn-danger">Remove</button>
+            </div>
+        </div>
+        <button type="button" id="add-summary" class="btn btn-primary">Add Summary Point</button>
+
+        <h2>Professional Experience</h2>
+        {% for i in range(5) %}
+        <div class="experience-section">
+            <h3>Experience {{ i + 1 }}</h3>
+            <input type="text" name="company_{{ i }}" placeholder="Company Name"
+                value="{{ resume_data.experience[i].company if resume_data and resume_data.experience|length > i else '' }}">
+            <input type="text" name="title_{{ i }}" placeholder="Job Title"
+                value="{{ resume_data.experience[i].title if resume_data and resume_data.experience|length > i else '' }}">
+            <input type="text" name="exp_location_{{ i }}" placeholder="Location"
+                value="{{ resume_data.experience[i].location if resume_data and resume_data.experience|length > i else '' }}">
+            <input type="text" name="exp_start_{{ i }}" placeholder="Start Date"
+                value="{{ resume_data.experience[i].start_date if resume_data and resume_data.experience|length > i else '' }}">
+            <input type="text" name="exp_end_{{ i }}" placeholder="End Date"
+                value="{{ resume_data.experience[i].end_date if resume_data and resume_data.experience|length > i else '' }}">
+            <input type="text" name="exp_skills_{{ i }}" placeholder="Skills Used"
+                value="{{ resume_data.experience[i].skills if resume_data and resume_data.experience|length > i else '' }}">
+            <textarea name="exp_description_{{ i }}" placeholder="Description">{{ '\n'.join(resume_data.experience[i].description) if resume_data and resume_data.experience|length > i else '' }}</textarea>
+        </div>
+        {% endfor %}
+
+        <h2>Skills</h2>
+        <div>
+            <label for="bi_tools">Business Intelligence Tools:</label>
+            <input type="text" id="bi_tools" name="bi_tools"
+                value="{{ resume_data.skills.bi_tools if resume_data else '' }}">
+        </div>
+        <div>
+            <label for="programming">Programming & ETL Tools:</label>
+            <input type="text" id="programming" name="programming"
+                value="{{ resume_data.skills.programming if resume_data else '' }}">
+        </div>
+        <div>
+            <label for="cloud">Cloud Platforms:</label>
+            <input type="text" id="cloud" name="cloud"
+                value="{{ resume_data.skills.cloud if resume_data else '' }}">
+        </div>
+        <div>
+            <label for="certifications">Certifications:</label>
+            <input type="text" id="certifications" name="certifications"
+                value="{{ resume_data.skills.certifications if resume_data else '' }}">
+        </div>
+
+        <h2>Education</h2>
+        {% for i in range(2) %}
+        <div class="education-section">
+            <h3>Education {{ i + 1 }}</h3>
+            <input type="text" name="school_{{ i }}" placeholder="School Name"
+                value="{{ resume_data.education[i].school if resume_data and resume_data.education|length > i else '' }}">
+            <input type="text" name="edu_location_{{ i }}" placeholder="Location"
+                value="{{ resume_data.education[i].location if resume_data and resume_data.education|length > i else '' }}">
+            <input type="text" name="degree_{{ i }}" placeholder="Degree"
+                value="{{ resume_data.education[i].degree if resume_data and resume_data.education|length > i else '' }}">
+            <input type="text" name="edu_duration_{{ i }}" placeholder="Duration"
+                value="{{ resume_data.education[i].duration if resume_data and resume_data.education|length > i else '' }}">
+        </div>
+        {% endfor %}
+
+        <h2>Leadership Experience</h2>
+        <div>
+            <textarea name="leadership" rows="4" cols="50">{{ '\n'.join(resume_data.leadership) if resume_data else '' }}</textarea>
+        </div>
+
+        <h2>Achievements</h2>
+        <div>
+            <textarea name="achievements" rows="4" cols="50">{{ '\n'.join(resume_data.achievements) if resume_data else '' }}</textarea>
+        </div>
+
+        <div>
+            <button type="submit">Generate Resume</button>
+        </div>
+    </form>
+
+    <script>
+    document.getElementById('add-summary').addEventListener('click', function() {
+        const container = document.getElementById('summary-container');
+        const newPoint = document.createElement('div');
+        newPoint.className = 'summary-point';
+        newPoint.innerHTML = `
+            <input type="text" name="summary[]" placeholder="Add summary point" class="form-control">
+            <button type="button" class="remove-point btn btn-danger">Remove</button>
+        `;
+        container.appendChild(newPoint);
+    });
+
+    document.getElementById('summary-container').addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-point')) {
+            e.target.parentElement.remove();
+        }
+    });
+    </script>
+
+    <style>
+    .summary-point {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .summary-point input {
+        flex-grow: 1;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+    </style>
+</body>
+</html> 

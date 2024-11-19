@@ -1,0 +1,53 @@
+<section id="summary">
+    <h2><i class="fas fa-file-alt"></i> Professional Summary</h2>
+    <div class="summary-points">
+        {% if resume_data and resume_data.summary %}
+            {% for point in resume_data.summary %}
+                <div class="summary-point" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 480px;">
+                        <textarea name="summary[]" placeholder="Enter a summary point" style="width: 100%;">{{ point }}</textarea>
+                    </div>
+                    {% if not loop.first %}
+                    <button type="button" class="remove-point" style="width: 30px; height: 30px; padding: 0; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;" onclick="removeSummaryPoint(this)">×</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="summary-point" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <div style="width: 480px;">
+                    <textarea name="summary[]" placeholder="Enter a summary point" style="width: 100%;"></textarea>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <button type="button" onclick="addSummaryPoint()" class="add-button">Add Summary Point</button>
+
+    <script>
+        // Function to add new summary point
+        function addSummaryPoint() {
+            const container = document.querySelector('.summary-points');
+            const newPoint = document.createElement('div');
+            newPoint.className = 'summary-point';
+            newPoint.style.display = 'flex';
+            newPoint.style.gap = '1rem';
+            newPoint.style.marginBottom = '1rem';
+            newPoint.innerHTML = `
+                <div style="width: 480px;">
+                    <textarea name="summary[]" placeholder="Enter a summary point" style="width: 100%;"></textarea>
+                </div>
+                <button type="button" class="remove-point" style="width: 30px; height: 30px; padding: 0; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;" onclick="removeSummaryPoint(this)">×</button>
+            `;
+            container.appendChild(newPoint);
+        }
+
+        // Function to remove summary point
+        function removeSummaryPoint(button) {
+            const points = document.querySelectorAll('.summary-point');
+            if (points.length > 1) {
+                button.closest('.summary-point').remove();
+            } else {
+                alert('At least one summary point is required!');
+            }
+        }
+    </script>
+</section> 

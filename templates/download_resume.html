@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Preview</title>
+    <style>
+        @font-face {
+            font-family: 'Calibri';
+            src: url('/static/fonts/calibri.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Calibri-Bold';
+            src: url('/static/fonts/calibrib.ttf') format('truetype');
+        }
+        
+        :root {
+            --text-color: #000000;
+            --link-color: #0066cc;
+            --line-color: #000000;
+            --section-spacing: 20px;
+            --subsection-spacing: 12px;
+        }
+
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            max-width: 8.5in;
+            margin: 0.3in auto;
+            padding: 0.1in;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            margin-bottom: var(--section-spacing);
+        }
+
+        .name {
+            font-family: 'Calibri-Bold', Arial, sans-serif;
+            font-size: 16pt;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .contact-info {
+            font-size: 11pt;
+            margin-bottom: 5px;
+        }
+
+        .contact-info a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: var(--section-spacing);
+        }
+
+        .section-title {
+            font-family: 'Calibri-Bold', Arial, sans-serif;
+            font-size: 12pt;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .section-line {
+            border-top: 1px solid var(--line-color);
+            margin: 5px 0 var(--subsection-spacing) 0;
+        }
+
+        /* Experience Entry Styling */
+        .experience-entry {
+            margin-bottom: var(--subsection-spacing);
+        }
+
+        .experience-header {
+            font-family: 'Calibri-Bold', Arial, sans-serif;
+            font-size: 11pt;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+
+        .skills-line {
+            font-size: 11pt;
+            margin-bottom: 5px;
+        }
+
+        .description-list {
+            margin: 5px 0;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+
+        .description-list li {
+            font-size: 11pt;
+            margin-bottom: 3px;
+            text-align: justify;
+            position: relative;
+        }
+
+        .description-list li:before {
+            content: "●";
+            position: absolute;
+            left: -15px;
+        }
+
+        /* Skills Section Styling */
+        .skill-category {
+            font-size: 11pt;
+            margin-bottom: var(--subsection-spacing);
+        }
+
+        .skill-category-title {
+            font-family: 'Calibri-Bold', Arial, sans-serif;
+            display: inline;
+        }
+
+        /* Education Styling */
+        .education-entry {
+            margin-bottom: var(--subsection-spacing);
+        }
+
+        .education-header {
+            font-family: 'Calibri-Bold', Arial, sans-serif;
+            font-size: 11pt;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .degree {
+            font-size: 11pt;
+            margin-top: 2px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                margin: 0.1in;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: var(--text-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 11pt;
+            margin-top: var(--section-spacing);
+            display: inline-block;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="name">{{ resume_data.personal_info.name | upper }}</div>
+        <div class="contact-info">
+            {{ resume_data.personal_info.location }} • 
+            <a href="mailto:{{ resume_data.personal_info.email }}">{{ resume_data.personal_info.email }}</a> • 
+            {{ resume_data.personal_info.phone }} •
+            {% if resume_data.personal_info.linkedin %}
+            <a href="{{ resume_data.personal_info.linkedin }}">LinkedIn</a> •
+            {% endif %}
+            {% if resume_data.personal_info.portfolio %}
+            <a href="{{ resume_data.personal_info.portfolio }}">Portfolio</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- After the header section -->
+    <div class="resume-content">
+        {% for section in section_order %}
+            {% if section == 'summary' and resume_data.summary %}
+                <div class="section">
+                    <div class="section-title">PROFESSIONAL SUMMARY</div>
+                    <div class="section-line"></div>
+                    <ul class="description-list">
+                        {% for point in resume_data.summary %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if section == 'experience' and resume_data.experience %}
+                <div class="section">
+                    <div class="section-title">PROFESSIONAL EXPERIENCE</div>
+                    <div class="section-line"></div>
+                    {% for exp in resume_data.experience %}
+                    <div class="experience-entry">
+                        <div class="experience-header">
+                            <span>{{ exp.position }} | {{ exp.company }} | {{ exp.location }}</span>
+                            <span>{{ exp.start_date }} - {{ exp.end_date }}</span>
+                        </div>
+                        {% if exp.skills %}
+                        <div class="skills-line" style="font-style: italic;">
+                            Skills: {{ exp.skills }}
+                        </div>
+                        {% endif %}
+                        <ul class="description-list">
+                            {% for resp in exp.responsibilities %}
+                            <li>{{ resp }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if section == 'leadership' and resume_data.leadership %}
+                <div class="section">
+                    <div class="section-title">LEADERSHIP EXPERIENCE</div>
+                    <div class="section-line"></div>
+                    {% for lead in resume_data.leadership %}
+                    <div class="experience-entry">
+                        <div class="experience-header">
+                            <span>{{ lead.title }}</span>
+                        </div>
+                        <ul class="description-list">
+                            <li>{{ lead.description }}</li>
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if section == 'skills' and resume_data.skills %}
+                <div class="section">
+                    <div class="section-title">SKILLS</div>
+                    <div class="section-line"></div>
+                    {% if resume_data.skills.bi_tools %}
+                    <div class="skill-category">
+                        <span class="skill-category-title">Business Intelligence and Visualization Tools: </span>
+                        {{ resume_data.skills.bi_tools }}
+                    </div>
+                    {% endif %}
+                    {% if resume_data.skills.programming %}
+                    <div class="skill-category">
+                        <span class="skill-category-title">Programming & ETL Tools: </span>
+                        {{ resume_data.skills.programming }}
+                    </div>
+                    {% endif %}
+                    {% if resume_data.skills.cloud %}
+                    <div class="skill-category">
+                        <span class="skill-category-title">Cloud Platform: </span>
+                        {{ resume_data.skills.cloud }}
+                    </div>
+                    {% endif %}
+                    {% if resume_data.skills.certifications %}
+                    <div class="skill-category">
+                        <span class="skill-category-title">Certifications: </span>
+                        {{ resume_data.skills.certifications }}
+                    </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if section == 'education' and resume_data.education %}
+                <div class="section">
+                    <div class="section-title">EDUCATION</div>
+                    <div class="section-line"></div>
+                    {% for edu in resume_data.education %}
+                    <div class="education-entry">
+                        <div class="experience-header" style="display: flex; justify-content: space-between;">
+                            <span style="font-family: 'Calibri-Bold', Arial, sans-serif;">{{ edu.school }} | {{ edu.edu_location }}</span>
+                            <span>{{ edu.edu_start }} - {{ edu.edu_end }}</span>
+                        </div>
+                        <div style="font-family: 'Calibri', Arial, sans-serif; font-size: 11pt;">{{ edu.degree }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if section == 'achievements' and resume_data.achievements %}
+                <div class="section">
+                    <div class="section-title">ACHIEVEMENTS</div>
+                    <div class="section-line"></div>
+                    <ul class="description-list">
+                        {% for achievement in resume_data.achievements %}
+                        <li>{{ achievement }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if section == 'projects' and resume_data.projects %}
+                <div class="section">
+                    <div class="section-title">PROJECTS</div>
+                    <div class="section-line"></div>
+                    {% for project in resume_data.projects %}
+                    <div class="experience-entry">
+                        <div class="experience-header">
+                            <span>{{ project.title }}</span>
+                        </div>
+                        <ul class="description-list">
+                            {% for desc in project.description %}
+                            <li>{{ desc }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Download Button -->
+    <div class="no-print" style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('download_resume', format='pdf') }}" 
+           style="background: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+            Download PDF
+        </a>
+    </div>
+</body>
+</html> 

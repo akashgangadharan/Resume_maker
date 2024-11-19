@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .section-container {
+            cursor: move;
+        }
+        
+        .section-handle {
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-handle i {
+            color: #666;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        .drag-over {
+            border: 2px dashed #666;
+        }
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('generate_resume') }}" method="POST">
+        {% include 'sections/personal_info.html' %}
+        
+        <div id="sortable-sections">
+            <!-- Summary Section -->
+            <div class="section-container" draggable="true" data-section="summary">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Professional Summary</span>
+                </div>
+                {% include 'sections/summary.html' %}
+            </div>
+
+            <!-- Professional Experience -->
+            <div class="section-container" draggable="true" data-section="experience">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Professional Experience</span>
+                </div>
+                {% include 'sections/experience.html' %}
+            </div>
+
+            <!-- Leadership Experience -->
+            <div class="section-container" draggable="true" data-section="leadership">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Leadership Experience</span>
+                </div>
+                {% include 'sections/leadership.html' %}
+            </div>
+
+            <!-- Skills -->
+            <div class="section-container" draggable="true" data-section="skills">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Skills</span>
+                </div>
+                {% include 'sections/skills.html' %}
+            </div>
+
+            <!-- Education -->
+            <div class="section-container" draggable="true" data-section="education">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Education</span>
+                </div>
+                {% include 'sections/education.html' %}
+            </div>
+
+            <!-- Achievements -->
+            <div class="section-container" draggable="true" data-section="achievements">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Achievements</span>
+                </div>
+                {% include 'sections/achievements.html' %}
+            </div>
+
+            <!-- Projects -->
+            <div class="section-container" draggable="true" data-section="projects">
+                <div class="section-handle">
+                    <i class="fas fa-grip-vertical"></i>
+                    <span>Projects</span>
+                </div>
+                {% include 'sections/projects.html' %}
+            </div>
+        </div>
+
+        <!-- Hidden input to store section order -->
+        <input type="hidden" name="section_order" id="section-order">
+        
+        <button type="submit">Generate Resume</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('sortable-sections');
+            const sections = container.getElementsByClassName('section-container');
+
+            // Add drag event listeners to all sections
+            Array.from(sections).forEach(section => {
+                section.addEventListener('dragstart', handleDragStart);
+                section.addEventListener('dragend', handleDragEnd);
+                section.addEventListener('dragover', handleDragOver);
+                section.addEventListener('drop', handleDrop);
+                section.addEventListener('dragenter', handleDragEnter);
+                section.addEventListener('dragleave', handleDragLeave);
+            });
+
+            let draggedItem = null;
+
+            function handleDragStart(e) {
+                draggedItem = this;
+                this.classList.add('dragging');
+            }
+
+            function handleDragEnd(e) {
+                this.classList.remove('dragging');
+                updateSectionOrder();
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+            }
+
+            function handleDragEnter(e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            }
+
+            function handleDragLeave(e) {
+                this.classList.remove('drag-over');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                if (this !== draggedItem) {
+                    const allItems = [...container.getElementsByClassName('section-container')];
+                    const draggedIndex = allItems.indexOf(draggedItem);
+                    const droppedIndex = allItems.indexOf(this);
+
+                    if (draggedIndex < droppedIndex) {
+                        this.parentNode.insertBefore(draggedItem, this.nextSibling);
+                    } else {
+                        this.parentNode.insertBefore(draggedItem, this);
+                    }
+                }
+            }
+
+            function updateSectionOrder() {
+                const sections = container.getElementsByClassName('section-container');
+                const order = Array.from(sections).map(section => section.dataset.section);
+                document.getElementById('section-order').value = JSON.stringify(order);
+            }
+
+            // Initialize section order
+            updateSectionOrder();
+        });
+    </script>
+</body>
+</html> 

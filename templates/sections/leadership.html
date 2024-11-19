@@ -1,0 +1,59 @@
+<section id="leadership">
+    <h2>Leadership Experience</h2>
+    <div id="leadership-container">
+        <div class="leadership-entry mb-3">
+            <div class="row">
+                <div class="col-11">
+                    <input type="text" class="form-control mb-2" name="leadership_title_0" placeholder="Leadership Title/Role">
+                    <textarea class="form-control" name="leadership_description_0" placeholder="Leadership Description" rows="3"></textarea>
+                </div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-danger btn-sm remove-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addLeadership()">Add Leadership Experience</button>
+
+    <script>
+        let leadershipCount = 1;
+
+        function addLeadership() {
+            if (leadershipCount < 3) {
+                const container = document.getElementById('leadership-container');
+                const newLeadership = `
+                    <div class="leadership-entry mb-3">
+                        <div class="row">
+                            <div class="col-11">
+                                <input type="text" class="form-control mb-2" name="leadership_title_${leadershipCount}" placeholder="Leadership Title/Role">
+                                <textarea class="form-control" name="leadership_description_${leadershipCount}" placeholder="Leadership Description" rows="3"></textarea>
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeLeadership(this)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', newLeadership);
+                leadershipCount++;
+            } else {
+                alert('Maximum 3 leadership experiences allowed!');
+            }
+        }
+
+        function removeLeadership(button) {
+            const leadershipEntries = document.getElementsByClassName('leadership-entry');
+            if (leadershipEntries.length > 1) {
+                button.closest('.leadership-entry').remove();
+                leadershipCount--;
+            } else {
+                alert('At least one leadership experience is required!');
+            }
+        }
+
+        // Add onclick handler to existing remove buttons
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.onclick = function() { removeLeadership(this); };
+        });
+    </script>
+</section> 

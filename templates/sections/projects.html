@@ -1,0 +1,76 @@
+<section id="projects">
+    <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+    <div id="project-container">
+        <div class="project-entry mb-3">
+            <div class="row">
+                <div class="col-11">
+                    <div style="width: 480px;">
+                        <input type="text" 
+                               class="form-control mb-2" 
+                               name="project_title_0" 
+                               placeholder="Project Title"
+                               style="width: 100%;">
+                    </div>
+                    <div style="width: 480px;">
+                        <textarea name="project_description_0[]" 
+                                  placeholder="Project Description" 
+                                  rows="3"
+                                  style="width: 100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addProject()">Add Project</button>
+    
+    <script>
+        let projectCount = 1;
+
+        function addProject() {
+            if (projectCount < 3) {
+                const container = document.getElementById('project-container');
+                const newProject = document.createElement('div');
+                newProject.className = 'project-entry mb-3';
+                newProject.innerHTML = `
+                    <div class="row">
+                        <div class="col-11">
+                            <div style="width: 480px;">
+                                <input type="text" 
+                                       class="form-control mb-2" 
+                                       name="project_title_${projectCount}" 
+                                       placeholder="Project Title"
+                                       style="width: 100%;">
+                            </div>
+                            <div style="width: 480px;">
+                                <textarea name="project_description_${projectCount}[]" 
+                                          placeholder="Project Description" 
+                                          rows="3"
+                                          style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" 
+                                    class="btn-delete-responsibility" 
+                                    onclick="removeProject(this)"
+                                    style="width: 30px; height: 30px; padding: 0; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">×</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(newProject);
+                projectCount++;
+            } else {
+                alert('Maximum 3 projects allowed!');
+            }
+        }
+
+        function removeProject(button) {
+            const projectEntries = document.getElementsByClassName('project-entry');
+            if (projectEntries.length > 1) {
+                button.closest('.project-entry').remove();
+                projectCount--;
+            } else {
+                alert('At least one project is required!');
+            }
+        }
+    </script>
+</section> 

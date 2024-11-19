@@ -1,0 +1,42 @@
+<section id="skills">
+    <h2><i class="fas fa-tools"></i> Skills</h2>
+    <div class="skills-section">
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="width: 600px;">
+                <label>BI Tools & Databases</label>
+                <input type="text" 
+                       name="bi_tools" 
+                       placeholder="e.g., Tableau, Power BI, SQL, MongoDB"
+                       value="{{ resume_data.skills.bi_tools if (resume_data and resume_data.skills) else '' }}"
+                       style="width: 100%;">
+            </div>
+            
+            <div style="width: 600px;">
+                <label>Programming Languages</label>
+                <input type="text" 
+                       name="programming" 
+                       placeholder="e.g., Python, Java, JavaScript"
+                       value="{{ resume_data.skills.programming if (resume_data and resume_data.skills) else '' }}"
+                       style="width: 100%;">
+            </div>
+            
+            <div style="width: 600px;">
+                <label>Cloud Platforms</label>
+                <input type="text" 
+                       name="cloud" 
+                       placeholder="e.g., AWS, Azure, GCP"
+                       value="{{ resume_data.skills.cloud if (resume_data and resume_data.skills) else '' }}"
+                       style="width: 100%;">
+            </div>
+            
+            <div style="width: 600px;">
+                <label>Certifications</label>
+                <input type="text" 
+                       name="certifications" 
+                       placeholder="e.g., AWS Solutions Architect, PMP"
+                       value="{{ resume_data.skills.certifications if (resume_data and resume_data.skills) else '' }}"
+                       style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</section> 

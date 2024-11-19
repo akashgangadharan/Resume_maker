@@ -1,0 +1,152 @@
+<section id="experience">
+    <h2><i class="fas fa-briefcase"></i> Professional Experience</h2>
+    <div id="experience-container">
+        <div class="experience-entry card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-11">
+                        <div class="grid" style="display: flex; gap: 4rem; margin-bottom: 1rem;">
+                            <div style="flex: 0 0 40%;">
+                                <input type="text" name="company_0" placeholder="Company Name" style="width: 100%;">
+                            </div>
+                            <div style="flex: 0 0 40%;">
+                                <input type="text" name="position_0" placeholder="Position" style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="grid" style="display: flex; gap: 4rem; margin-bottom: 1rem;">
+                            <div style="flex: 0 0 25%;">
+                                <input type="text" name="location_0" placeholder="Location" style="width: 100%;">
+                            </div>
+                            <div style="flex: 0 0 25%;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Start Date</label>
+                                <input type="month" name="exp_start_0" style="width: 100%;">
+                            </div>
+                            <div style="flex: 0 0 25%;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">End Date</label>
+                                <input type="month" name="exp_end_0" style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="grid" style="display: flex; justify-content: flex-start; margin-bottom: 1rem;">
+                            <div style="flex: 0 0 70%;">
+                                <input type="text" name="skills_0" placeholder="Skills (e.g., Python, AWS, SQL)" style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="responsibilities-container">
+                            <div class="responsibility-entry">
+                                <div class="row">
+                                    <div style="flex: 0 0 55%; margin-right: 1rem;">
+                                        <textarea name="responsibilities_0[]" placeholder="Job Responsibility" rows="2" style="width: 100%;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-responsibility" onclick="addResponsibility(this)">Add Responsibility</button>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn-delete" onclick="deleteExperience(this)">×</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn-add" onclick="addExperience()">Add Experience</button>
+
+    <script>
+        let experienceCount = 1;
+
+        function addExperience() {
+            const container = document.getElementById('experience-container');
+            const newExperience = document.createElement('div');
+            newExperience.className = 'experience-entry card';
+            newExperience.innerHTML = `
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="grid" style="display: flex; gap: 4rem; margin-bottom: 1rem;">
+                                <div style="flex: 0 0 40%;">
+                                    <input type="text" name="company_${experienceCount}" placeholder="Company Name" style="width: 100%;">
+                                </div>
+                                <div style="flex: 0 0 40%;">
+                                    <input type="text" name="position_${experienceCount}" placeholder="Position" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="grid" style="display: flex; gap: 4rem; margin-bottom: 1rem;">
+                                <div style="flex: 0 0 25%;">
+                                    <input type="text" name="location_${experienceCount}" placeholder="Location" style="width: 100%;">
+                                </div>
+                                <div style="flex: 0 0 25%;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Start Date</label>
+                                    <input type="month" name="exp_start_${experienceCount}" style="width: 100%;">
+                                </div>
+                                <div style="flex: 0 0 25%;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">End Date</label>
+                                    <input type="month" name="exp_end_${experienceCount}" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="grid" style="display: flex; justify-content: flex-start; margin-bottom: 1rem;">
+                                <div style="flex: 0 0 70%;">
+                                    <input type="text" name="skills_${experienceCount}" placeholder="Skills (e.g., Python, AWS, SQL)" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="responsibilities-container">
+                                <div class="responsibility-entry">
+                                    <div class="row">
+                                        <div style="flex: 0 0 55%; margin-right: 1rem;">
+                                            <textarea name="responsibilities_${experienceCount}[]" placeholder="Job Responsibility" rows="2" style="width: 100%;"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-add-responsibility" onclick="addResponsibility(this)">Add Responsibility</button>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn-delete" onclick="deleteExperience(this)">×</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newExperience);
+            experienceCount++;
+        }
+
+        function deleteExperience(button) {
+            const entries = document.getElementsByClassName('experience-entry');
+            if (entries.length > 1) {
+                button.closest('.experience-entry').remove();
+                experienceCount--;
+            } else {
+                alert('At least one experience entry is required!');
+            }
+        }
+
+        function addResponsibility(button) {
+            const container = button.previousElementSibling;
+            const experienceEntry = button.closest('.experience-entry');
+            const experienceIndex = Array.from(document.getElementsByClassName('experience-entry')).indexOf(experienceEntry);
+            
+            const newResponsibility = document.createElement('div');
+            newResponsibility.className = 'responsibility-entry';
+            newResponsibility.innerHTML = `
+                <div class="row">
+                    <div style="flex: 0 0 55%; margin-right: 1rem;">
+                        <textarea name="responsibilities_${experienceIndex}[]" placeholder="Job Responsibility" rows="2" style="width: 100%;"></textarea>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn-delete-responsibility" onclick="deleteResponsibility(this)">×</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newResponsibility);
+        }
+
+        function deleteResponsibility(button) {
+            const container = button.closest('.responsibilities-container');
+            const entries = container.getElementsByClassName('responsibility-entry');
+            if (entries.length > 1) {
+                button.closest('.responsibility-entry').remove();
+            } else {
+                alert('At least one responsibility is required!');
+            }
+        }
+    </script>
+</section> 
