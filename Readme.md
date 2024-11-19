@@ -98,9 +98,10 @@ resume-maker-pro/
 
 2. Start the Flask application:
 bash
+
 python main.py
 
-3. Open your web browser and navigate to:
+4. Open your web browser and navigate to:
 http://localhost:5000
 
 
