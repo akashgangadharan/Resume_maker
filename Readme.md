@@ -1,6 +1,6 @@
-# Resume Builder Pro
+# Resume Maker
 
-A professional resume builder web application built with Flask that allows users to create, customize, and download their resume in PDF format. Features include drag-and-drop section reordering, real-time preview, and professional formatting.
+A professional resume maker web application built with Flask that allows users to create, customize, and download their resume in PDF format. Features include drag-and-drop section reordering, real-time preview, and professional formatting.
 
 ## Features
 
@@ -68,7 +68,7 @@ Note: Due to licensing restrictions, you need to obtain these fonts legally thro
 
 ## Project Structure
 
-resume-builder-pro/
+resume-maker-pro/
 ├── main.py
 ├── static/
 │ ├── css/
