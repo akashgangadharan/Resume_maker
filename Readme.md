@@ -28,7 +28,7 @@ A professional resume builder web application built with Flask that allows users
 1. Clone the repository
 
 bash
-git clone https://github.com/yourusername/resume-builder-pro.git
+git clone https://github.com/akashgangadharan/Resume_maker.git
 cd resume-builder-pro
 
 
